@@ -4,7 +4,9 @@ var mysql = require('mysql');
 var bodyParser = require('body-parser');
 const dbConfig = require('../src/db.config');
 
-var c = mysql.createConnection({
+
+// Se crea la conexión con la base de datos usando los datos del archivo db.config.js
+var conn = mysql.createConnection({
   host: dbConfig.HOST,
   user: dbConfig.USER,
   password: dbConfig.PASSWORD,
@@ -14,14 +16,17 @@ var c = mysql.createConnection({
 });
 
 
-/* GET prendas */
+// Ruta para la vista prendas
 router.get('/prendas', function(req, res, next) {
-  c.query('SELECT * FROM prendas', function(err, rows, fields) {
+  conn.query('SELECT * FROM prendas', function(err, rows, fields) {
     if (err) throw err;
     var prendas = [];
+    // console.log(prendas);
     for (let i=0; i < rows.length; i++) {
       prendas.push(rows[i]);
+      // console.log(fields);
     }
+    console.log(prendas);
     res.status(200).send({
       prendas
     });
@@ -29,9 +34,9 @@ router.get('/prendas', function(req, res, next) {
 });
 
 
-// GET categorias
+// Ruta para la vista categorías
 router.get('/categorias', function(req, res) {
-  c.query('SELECT * FROM categorias', function(err, rows, fields) {
+  conn.query('SELECT * FROM categorias', function(err, rows, fields) {
     if (err) throw err;
     var categorias = [];
     for (let i=0; i < rows.length; i++) {
