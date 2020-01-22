@@ -1,1 +1,0 @@
-options = ['INICIO', 'CLIENTES', 'PROVEEDORES']

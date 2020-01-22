@@ -1,35 +1,35 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
+const dbConfig = require('../src/db.config');
 
-var opciones = ['INICIO', 'CLIENTES', 'PROVEEDORES'];
-
-const c = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'asd123',
-  database : 'boutique'
+var c = mysql.createConnection({
+  host: dbConfig.HOST,
+  user: dbConfig.USER,
+  password: dbConfig.PASSWORD,
+  database: dbConfig.DB,
+  dialect: dbConfig.dialect,
+  pool: dbConfig.pool
 });
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  c.query('SELECT * FROM prendas', async function(err, rows, fields) {
-    if (err) {throw err};
+
+/* GET prendas */
+router.get('/prendas', function(req, res, next) {
+  c.query('SELECT * FROM prendas', function(err, rows, fields) {
+    if (err) throw err;
     var prendas = [];
-    await function selPrendas (){
-      for (let i=0; i < rows.length; i++) {
-        prendas.push(rows[i]);
-      }
-    };
-  });
-  res.status(200).send({prendas});
-  next.render('index', {
-  title: 'Express',
-  options: opciones,
-  session: true
+    for (let i=0; i < rows.length; i++) {
+      prendas.push(rows[i]);
+    }
+    res.status(200).send({
+      prendas
+    });
   });
 });
 
+
+// GET categorias
 router.get('/categorias', function(req, res) {
   c.query('SELECT * FROM categorias', function(err, rows, fields) {
     if (err) throw err;
