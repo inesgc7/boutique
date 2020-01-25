@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 const dbConfig = require('../src/db.config');
 
 
+
 // Se crea la conexión con la base de datos usando los datos del archivo db.config.js
 var conn = mysql.createConnection({
   host: dbConfig.HOST,
@@ -13,6 +14,18 @@ var conn = mysql.createConnection({
   database: dbConfig.DB,
   dialect: dbConfig.dialect,
   pool: dbConfig.pool
+});
+
+router.get('/', (req, res)=> {
+  conn.query('SELECT * FROM index_cards',
+    (err, rows, fields) => {
+      if (err) throw err;
+      var prendas = rows;
+      res.status(200).send({
+        prendas
+      });
+    }
+  );
 });
 
 
