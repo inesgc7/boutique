@@ -17,7 +17,7 @@ var conn = mysql.createConnection({
 });
 
 router.get('/', (req, res)=> {
-  conn.query('SELECT * FROM index_cards',
+  conn.query('SELECT * FROM index_view',
     (err, rows, fields) => {
       if (err) throw err;
       var prendas = rows;
